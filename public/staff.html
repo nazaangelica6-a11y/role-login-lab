@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Staff Dashboard</h1>
+        <p>Welcome, Staff Member!</p>
+
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        const currentUser = JSON.parse(
+            sessionStorage.getItem('currentUser') || 'null'
+        );
+
+        if (!currentUser || currentUser.role !== 'staff') {
+            window.location.href = '/login.html';
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = '/login.html';
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Admin Dashboard</h1>
+        <p>Welcome, Admin!</p>
+
+        <h2>User List</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody id="userTable"></tbody>
+        </table>
+
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        const currentUser = JSON.parse(
+            sessionStorage.getItem('currentUser') || 'null'
+        );
+
+        if (!currentUser || currentUser.role !== 'admin') {
+            window.location.href = '/login.html';
+        } else {
+            fetch('/api/users')
+                .then(response => response.json())
+                .then(users => {
+                    const table = document.getElementById('userTable');
+
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+
+                        row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${user.role}</td>
+                        `;
+
+                        table.appendChild(row);
+                    });
+                });
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = '/login.html';
+        }
+    </script>
+</body>
+</html>
